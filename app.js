@@ -26,9 +26,7 @@ port.open(function(err) {
         return;
     }
     console.log("Port opened");
-})
-
-// Chargement du Fichier
+    // Chargement du Fichier
 var content;
 fs.readFile('./outputs/output.nmea', function read(err, data){
     if (err) {
@@ -52,7 +50,10 @@ fs.readFile('./outputs/output.nmea', function read(err, data){
         if (index > array.length - 3)
             index = 0;
     }, 1000);
+});
 })
+
+
 
  
 
