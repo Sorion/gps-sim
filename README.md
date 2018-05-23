@@ -2,8 +2,8 @@
 
 ## Introduction
 
-Gps Simulator is a simple nodejs gps simaultor that send nmea sentences (GGA, GSA, RMC) through a serial port.
-It has been design to work as a virual test gps devices for your app that receive nmea data trhough serial port
+Gps Simulator is a simple nodejs gps simulator that send nmea sentences (GGA, GSA, RMC) through a serial port.
+It has been design to work as a virual test gps devices for your app that receive nmea data through serial port
 
 In this case you will need additional tools depending on your operating system.
 
@@ -14,7 +14,7 @@ In this case you will need additional tools depending on your operating system.
 On windows you will need com0com. It's a serial port emulator for windows.
 It create virtual port that can be paired together to simulate the input and output of a device.
 In our case we can create and paired `COM29` & `COM30` port.
-`COM29` port will be the output of the gps simulator & `COM30` will be the port where data are received in your own app.
+`COM29` port will be the input of the gps simulator & `COM30` will be the output port where data are received in your own app.
 
 You can find here com0com [here](https://sourceforge.net/projects/com0com/).
 
@@ -43,7 +43,7 @@ sudo modprobe tty0tty
 
 You need nodejs to run this app.
 
-Once need is installed clone this repo.
+Once node is installed clone this repo.
 
 If your are on windows find the line in app.js that contains `COM29` and replace it with your desired port.
 
