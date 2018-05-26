@@ -8,6 +8,9 @@
         <h1>GPS Settings</h1>
         <input type="checkbox" id="run" >
         <label>Run</label>
+        <input type="text" id="port", placeholder="ex: COM29" >
+        <label>Serial port</label>
+        <input type="button" id="apply", value="Apply Change">
         <input type="number" value="1" id="speed">
         <label>Speed Factor</label>
         <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
@@ -15,10 +18,16 @@
         <script>
             var run = document.querySelector('input[id="run"]');
             var speed = document.querySelector('input[id="speed"]');
+            var apply = document.querySelector('input[id="apply"]');
+            var port = document.querySelector('input[id="port"]'); 
             var socket = io.connect('http://localhost:8080');
             var checked = false;
             run.addEventListener('click', function(e) {
                 socket.emit('run', run.checked);
+            })
+
+            apply.addEventListener('click', function(e) {
+                socket.emit('apply', port.value);
             })
 
             speed.addEventListener('change', function(e) {
