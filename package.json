@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rm -rf dist && tsc && cp -r outputs dist/ && cp -r html dist/"
+    "build": "rm -rf dist && tsc && cp -r outputs dist/ && cp -r html dist/ && cp -r config dist/config"
   },
   "repository": {
     "type": "git",
@@ -29,6 +29,8 @@
     "@nestjs/swagger": "^2.2.0",
     "@nestjs/websockets": "^5.1.0",
     "@types/winston": "^2.3.9",
+    "dotenv": "^6.0.0",
+    "joi": "^13.4.0",
     "reflect-metadata": "^0.1.12",
     "rxjs": "^6.2.2",
     "serialport": "^6.2.0",
@@ -36,6 +38,8 @@
     "winston": "^2.4.2"
   },
   "devDependencies": {
+    "@types/dotenv": "^4.0.3",
+    "@types/joi": "^13.4.0",
     "@types/serialport": "^6.0.1",
     "@types/socket.io": "^1.4.33"
   }
