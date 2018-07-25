@@ -1,12 +1,15 @@
 {
     "compilerOptions": {
+        "experimentalDecorators": true,
+        "noImplicitAny": false,
         "target": "es6",
         "module": "commonjs",
         "outDir": "./dist",
         "strict": true,
         "sourceMap": true,
         "lib": [
-            "es6"
+            "es6",
+            "dom"
         ],
         "typeRoots": [
             "node_modules/@types"

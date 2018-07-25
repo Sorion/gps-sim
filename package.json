@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --config webpack.prod.js"
+    "build": "rm -rf dist && tsc && cp -r outputs dist/ && cp -r html dist/"
   },
   "repository": {
     "type": "git",

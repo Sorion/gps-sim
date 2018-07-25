@@ -1,39 +1,24 @@
-import * as express from 'express';
-import * as http from 'http';
-import * as socketio from 'socket.io';
-import * as winston from 'winston';
-import * as path from 'path';
-import * as fs from 'fs';
-import { AddressInfo } from 'net';
-import { GPSService } from './gps.service';
+import { NestFactory } from '@nestjs/core';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
-const app = express();
-app.get('/', (req, res) => {
-    fs.readFile('./html/index.html', 'utf-8', (error, content) => {
-        res.writeHead(200, {"Content-Type": "text/html"});
-        res.end(content);
-    });
-});
+import { AppModule } from './app.module';
 
-// Init http server
-const server = http.createServer(app);
+async function bootstrap() {
 
-// Init GPS Service
-const gpsService = new GPSService();
+  const app = await NestFactory.create(AppModule);
 
-// Init WebSocket
-const ws = socketio.listen(server);
+  // Add CORS to allow Request to API
+  app.enableCors();
 
-ws.sockets.on('connection', (socket: SocketIO.Socket) => {
-    gpsService.socket = socket;
-    gpsService.reload();
-    socket.on('message', (message: string) => {
-        console.log('Message received: %s', message);
-    });
-});
+  // Swagger section, create and deploy api doc
+  const options = new DocumentBuilder()
+  .setTitle('GPS-Sim Server')
+  .setDescription('The GPS-Sim API description')
+  .setVersion('1.0')
+  .build();
+  const document = SwaggerModule.createDocument(app, options);
+  SwaggerModule.setup('api', app, document);
 
-// Start the server
-server.listen(process.env.port || 8080, () => {
-    const info= server.address() as AddressInfo;
-    console.info(`Server started on port ${info.port}`);
-});
+  await app.listen(3000);
+}
+bootstrap();
