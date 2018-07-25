@@ -1,20 +1,15 @@
 import * as fs from 'fs';
 import * as serialport from 'serialport';
+import { Injectable, Logger } from '@nestjs/common';
 
+const logger = new Logger('GPSService', true);
+
+@Injectable()
 export class GPSService {
-    private pSocket!: SocketIO.Socket;
     private id: any;
     private array: Array<string> = [];
     private index: number = 0;
     private port!: serialport;
-
-    public get socket(): SocketIO.Socket {
-        return this.pSocket;
-    }
-
-    public set socket(value: SocketIO.Socket) {
-        this.pSocket = value;
-    }
 
     constructor() {
         this.id = 0;
@@ -31,41 +26,39 @@ export class GPSService {
         this.getSentences();
     }
 
-    public reload(): void {
-        this.socket.on('run', (checked: boolean) => {
-            this.changeStatus(checked);
-        });
-        this.socket.on('apply', (port: string) => {
-            this.updateSerialPort(port);
-        });
-    }
-
     public close(): void {
         this.port.close(err => {
             if (err) {
-                console.log(err);
+                logger.log(err.message);
             }
         });
     }
 
-    public openPort(): void {
-        this.port.open(err => {
-            if (err) {
-                console.error("ERROR OPENING PORT");
-                return;
-            }
-            console.log("Port opened");
-        });
+    public openPort(): boolean {
+        try {
+            this.port.open(err => {
+                if (err) {
+                    logger.error('Error while opening port: ' + err.message);
+                    return false;
+                }
+                logger.log('Port opened');
+            });
+        } catch {
+            return false;
+        }
+
+        return true;
     }
 
-    public updateSerialPort(port: string): void {
-        console.log(port.length);
+    public updateSerialPort(port: string): boolean {
+        logger.log(port.length.toString());
         if (this.port !== undefined) {
-            console.log('Closing port');
+            logger.log('Closing port');
             try {
                 this.close();
             } catch {
-                console.log("Port already closed");
+                logger.log("Port already closed");
+                return false;
             }
             this.port;
         }
@@ -77,18 +70,20 @@ export class GPSService {
 
         this.port.pipe(new serialport.parsers.Readline({ delimiter: '\r\n' }));
 
-        console.log(`Serialport changed to ${port}`);
+        logger.log(`Serialport changed to ${port}`);
 
-        this.openPort();
+        return this.openPort();
     }
 
-    public changeStatus(run: boolean): void {
+    public changeStatus(run: boolean): boolean {
         if (run) {
-            console.log("Run");
+            logger.log('Run');
             this.id = setInterval(() => { this.run(); }, 1000);
+            return true;
         } else {
-            console.log('Stop');
+            logger.log('Stop');
             clearInterval(this.id);
+            return false;
         }
     }
 
@@ -96,12 +91,9 @@ export class GPSService {
         const msg = this.array[this.index] + "\r\n" + this.array[this.index + 1] + "\r\n" + this.array[this.index + 2] + "\r\n";
         this.port.write(Buffer.from(msg), err => {
             if (err) {
-                console.error(err);
+                logger.error(err);
                 return;
             }
-            console.log('Array : ', this.array);
-            console.log('MSG:', msg);
-            console.log('GPS Data send...');
         });
         this.index +=3;
 
@@ -110,16 +102,17 @@ export class GPSService {
     }
 
     public getSentences(): void {
+        logger.log('Get file ' +'../../outputs/output.nmea');
         fs.readFile('./outputs/output.nmea', (err, data) => { this.read(err, data) });
     }
 
     public read(err: NodeJS.ErrnoException, data: Buffer): void {
         if (err) {
-            console.log("Error while opening file output.nmea");
+            logger.error("Error while opening file output.nmea", err.message);
             return;
         }
         const content = data.toString("utf-8");
         this.array = content.split("\n");
-        console.log('Sentences readed');
+        logger.log('Sentences readed');
     }
 }

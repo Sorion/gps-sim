@@ -2,8 +2,8 @@ import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 import { AppModule } from './app.module';
-import { ConfigService } from './config/config.service';
-import { SwaggerBaseConfig } from '../node_modules/@nestjs/swagger/dist/interfaces';
+import { ConfigService } from './server/config/config.service';
+import { SwaggerBaseConfig } from '@nestjs/swagger/dist/interfaces';
 
 function getSwaggerOptions(): SwaggerBaseConfig {
   const options = new DocumentBuilder()

@@ -1,9 +1,13 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from './config/config.module';
+import { ConfigModule } from './server/config/config.module';
+import { GPSModule } from './server/gps/gps.module';
 
 
 @Module({
-  imports: [ConfigModule],
+  imports: [
+    ConfigModule,
+    GPSModule,
+  ],
 })
 export class AppModule {
 }
