@@ -57,4 +57,4 @@ node app.js
 
 ## Known bugs
 
-* On linux the very fist message to write will failed but others are ok.
+* On linux the very first message to write will failed but others are ok.
