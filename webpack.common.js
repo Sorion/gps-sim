@@ -1,7 +1,7 @@
 const webpack = require('webpack');
 const fs = require('fs');
 const path = require('path');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
@@ -17,7 +17,7 @@ module.exports = {
     target: 'node',
     externals: nodeModules,
     plugins: [
-        new CleanWebpackPlugin(['dist']),
+        new CleanWebpackPlugin(),
         new CopyWebpackPlugin([
             { from: './html', to: './html' },
             { from: './outputs', to: './outputs' }

@@ -1,8 +1,6 @@
 import * as express from 'express';
 import * as http from 'http';
 import * as socketio from 'socket.io';
-import * as winston from 'winston';
-import * as path from 'path';
 import * as fs from 'fs';
 import { AddressInfo } from 'net';
 import { GPSService } from './gps.service';

@@ -113,7 +113,7 @@ export class GPSService {
         fs.readFile('./outputs/output.nmea', (err, data) => { this.read(err, data) });
     }
 
-    public read(err: NodeJS.ErrnoException, data: Buffer): void {
+    public read(err: NodeJS.ErrnoException | null, data: Buffer): void {
         if (err) {
             console.log("Error while opening file output.nmea");
             return;
